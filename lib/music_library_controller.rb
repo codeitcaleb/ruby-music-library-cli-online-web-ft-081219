@@ -39,12 +39,15 @@ class MusicLibraryController
 
   def list_songs
    #this gives you an array of song instances sorted by name alphabetically
-    songs_sorted_by_name = Song.all.sort_by do |song|
-      song.name
+    # songs_sorted_by_name = Song.all.sort{ |a, b| a.name <=> b.name }
+    # songs_sorted_by_name.each.with_index(1) do |song,index|
+    #   puts "#{index}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+    # end    
+    Song.all.uniq.sort{ |a, b| a.name <=> b.name }.each.with_index(1) do |s, i|
+      puts "#{i}. #{s.artist.name} - #{s.name} - #{s.genre.name}"
     end
-    songs_sorted_by_name.each.with_index(1) do |song,index|
-      puts "#{index}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
-    end
+
+
   end
 
   def list_artists
@@ -104,12 +107,11 @@ class MusicLibraryController
     list_of_songs =  Song.all.sort{ |a, b| a.name <=> b.name }
 
     input = gets.strip.to_i
-    #if (input > 0) && (input <= list_of_songs.size)
-    #if (input >= 1) && (input <= list_of_songs.size)
+  
     if (1..Song.all.length).include?(input)
-      song = list_of_songs[input+2]
+      song = list_of_songs[input - 1]
       puts "Playing #{song.name} by #{song.artist.name}"
     end
+    binding.pry
   end
 end
-
